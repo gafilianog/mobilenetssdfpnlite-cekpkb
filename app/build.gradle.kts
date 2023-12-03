@@ -36,6 +36,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        mlModelBinding = true
     }
 }
 
@@ -49,10 +50,15 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    val camerax_version = "1.3.0"
+    val camerax_version = "1.2.0"
     implementation("androidx.camera:camera-camera2:$camerax_version")
     implementation("androidx.camera:camera-lifecycle:$camerax_version")
     implementation("androidx.camera:camera-view:$camerax_version")
 
-    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.4")
+    val tensorflowlite_version = "0.4.4"
+    implementation("org.tensorflow:tensorflow-lite-task-vision:$tensorflowlite_version")
+    implementation("org.tensorflow:tensorflow-lite-support:$tensorflowlite_version")
+    implementation("org.tensorflow:tensorflow-lite-metadata:$tensorflowlite_version")
+
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.13.0")
 }
