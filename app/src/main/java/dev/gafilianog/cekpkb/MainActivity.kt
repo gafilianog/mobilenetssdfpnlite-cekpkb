@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             if (isGranted) {
                 startCamera()
             } else {
-                Toast.makeText(this, "Camera permission rejected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "butuh kamera", Toast.LENGTH_SHORT).show()
             }
         }
 
