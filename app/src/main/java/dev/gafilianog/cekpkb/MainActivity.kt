@@ -1,6 +1,7 @@
 package dev.gafilianog.cekpkb
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,17 +15,14 @@ import dev.gafilianog.cekpkb.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
     private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
+        registerForActivityResult(ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
-            val message = if (isGranted) {
-                "Camera permission granted"
+            if (isGranted) {
+                startCamera()
             } else {
-                "Camera permission rejected"
+                Toast.makeText(this, "Camera permission rejected", Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +30,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        if (hasRequiredPermissions()) startCamera()
+        else requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+    }
 
-        startCamera()
+    private fun hasRequiredPermissions(): Boolean {
+        return REQUIRED_PERMISSIONS.all {
+            ContextCompat.checkSelfPermission(
+                this,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     private fun startCamera() {
@@ -59,5 +65,9 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal memunculkan kamera.", Toast.LENGTH_SHORT).show()
             }
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 }
