@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CekPKB</string>
+    <string name="btn_take_picture">Ambil gambar</string>
 </resources>
