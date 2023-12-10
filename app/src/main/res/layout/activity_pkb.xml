@@ -27,7 +27,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_vehicle_info"
+        android:id="@+id/card_vehicle_tax_info"
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,57 +42,191 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_vehicle_info_label"
-                style="@style/TextAppearance.Material3.TitleMedium"
+                android:id="@+id/tv_vehicle_tax_info_label"
+                style="@style/TextAppearance.Material3.TitleLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/vehicle_info_label" />
+                android:text="@string/vehicle_tax_info_label" />
 
-            <ListView
-                android:id="@+id/lv_vehicle_info"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:divider="@null"
-                android:focusable="false"
-                android:listSelector="@android:color/transparent"
-                tools:listitem="@layout/item_row_vehicle" />
+                android:layout_marginTop="5dp">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/merek_label" />
 
-    </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/tv_vehicle_merek"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Toyota" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_tax_info"
-        style="@style/Widget.Material3.CardView.Elevated"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/card_vehicle_info">
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_tax_info_label"
-                style="@style/TextAppearance.Material3.TitleMedium"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tax_info_label" />
+                android:layout_marginTop="5dp">
 
-            <ListView
-                android:id="@+id/lv_tax_info"
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/model_label" />
+
+                <TextView
+                    android:id="@+id/tv_vehicle_model"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="PICANTO 1.2 MT" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:divider="@null"
-                android:focusable="false"
-                android:listSelector="@android:color/transparent"
-                tools:listitem="@layout/item_row_vehicle" />
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/tahun_label" />
+
+                <TextView
+                    android:id="@+id/tv_vehicle_tahun"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="2013" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/pkb_pokok_label" />
+
+                <TextView
+                    android:id="@+id/tv_vehicle_pkb_pokok"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/pkb_denda_label" />
+
+                <TextView
+                    android:id="@+id/tv_vehicle_pkb_denda"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/pkb_label" />
+
+                <TextView
+                    android:id="@+id/tv_vehicle_pkb"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/swdkllj_pokok_label" />
+
+                <TextView
+                    android:id="@+id/tv_vehicle_swdkllj_pokok"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/swdkllj_denda_label" />
+
+                <TextView
+                    android:id="@+id/tv_vehicle_swdkllj_denda"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/swdkllj_label" />
+
+                <TextView
+                    android:id="@+id/tv_vehicle_swdkllj"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="0" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -105,9 +239,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/total_payment_label"
+        app:layout_constraintBottom_toTopOf="@id/tv_total_payment_value"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_tax_info" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_total_payment_value"
@@ -116,9 +250,9 @@
         android:layout_height="wrap_content"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_due_date_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_total_payment_info"
         tools:text="Rp999.999,-" />
 
     <TextView
@@ -128,20 +262,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/due_date_label"
+        app:layout_constraintBottom_toTopOf="@id/tv_due_date_value"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_total_payment_value" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_due_date_value"
         style="@style/TextAppearance.Material3.HeadlineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_due_date_info"
         tools:text="01-01-1970" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
