@@ -1,6 +1,7 @@
 package dev.gafilianog.cekpkb
 
 data class Pkb(
+    var isFound: Boolean = true,
     var merek: String = "",
     var model: String = "",
     var tahun: String = "",

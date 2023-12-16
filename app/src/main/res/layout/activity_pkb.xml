@@ -46,7 +46,7 @@
                 style="@style/TextAppearance.Material3.TitleLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/vehicle_tax_info_label" />
+                android:text="@string/txt_vehicle_tax_info" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,10 +54,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="@string/merek_label" />
+                    android:text="@string/txt_merek" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_merek"
@@ -74,10 +74,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="@string/model_label" />
+                    android:text="@string/txt_model" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_model"
@@ -94,10 +94,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/tahun_label" />
+                    android:text="@string/txt_tahun" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_tahun"
@@ -114,10 +114,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/pkb_pokok_label" />
+                    android:text="@string/txt_pkb_pokok" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_pkb_pokok"
@@ -134,10 +134,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/pkb_denda_label" />
+                    android:text="@string/txt_pkb_denda" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_pkb_denda"
@@ -154,10 +154,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/pkb_label" />
+                    android:text="@string/txt_pkb" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_pkb"
@@ -174,10 +174,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/swdkllj_pokok_label" />
+                    android:text="@string/txt_swdkllj_pokok" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_swdkllj_pokok"
@@ -194,10 +194,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/swdkllj_denda_label" />
+                    android:text="@string/txt_swdkllj_denda" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_swdkllj_denda"
@@ -214,10 +214,10 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/swdkllj_label" />
+                    android:text="@string/txt_swdkllj" />
 
                 <TextView
                     android:id="@+id/tv_vehicle_swdkllj"
@@ -233,12 +233,24 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
+        android:id="@+id/tv_not_found_response"
+        style="@style/TextAppearance.Material3.HeadlineMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:text="@string/txt_not_found_response"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/tv_total_payment_info"
         style="@style/TextAppearance.Material3.TitleMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/total_payment_label"
+        android:text="@string/txt_total_payment"
         app:layout_constraintBottom_toTopOf="@id/tv_total_payment_value"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -248,6 +260,7 @@
         style="@style/TextAppearance.Material3.HeadlineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tv_due_date_info"
@@ -261,7 +274,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/due_date_label"
+        android:text="@string/txt_due_date"
         app:layout_constraintBottom_toTopOf="@id/tv_due_date_value"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

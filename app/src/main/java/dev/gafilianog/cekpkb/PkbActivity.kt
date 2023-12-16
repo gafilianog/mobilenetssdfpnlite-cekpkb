@@ -1,46 +1,68 @@
 package dev.gafilianog.cekpkb
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import dev.gafilianog.cekpkb.databinding.ActivityPkbBinding
 
 class PkbActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPkbBinding
+    private lateinit var detectedPrefixLicense: String
     private lateinit var detectedNumberLicense: String
     private lateinit var detectedSuffixLicense: String
+    private lateinit var data: Pkb
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPkbBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO: Enable back button at topbar
+        setSupportActionBar(binding.toolbarResult)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        detectedPrefixLicense = intent.getStringExtra("LICENSE_PREFIX")!!
         detectedNumberLicense = intent.getStringExtra("LICENSE_NUMBER")!!
         detectedSuffixLicense = intent.getStringExtra("LICENSE_SUFFIX")!!
 
+        data = PkbData.pkbData
         setUpDataInfo()
         binding.toolbarResult.subtitle = getString(
-            R.string.detected_license_number,
-            "AB",
+            R.string.txt_detected_nopol,
+            detectedPrefixLicense,
             detectedNumberLicense,
-            detectedSuffixLicense)
+            detectedSuffixLicense
+        )
     }
 
     private fun setUpDataInfo() {
-        // TODO: Handle number/money symbol
-        binding.tvVehicleMerek.text = PkbData.pkbData.merek
-        binding.tvVehicleModel.text = PkbData.pkbData.model
-        binding.tvVehicleTahun.text = PkbData.pkbData.tahun
+        if (data.isFound) {
+            binding.tvVehicleMerek.text = data.merek
+            binding.tvVehicleModel.text = data.model
+            binding.tvVehicleTahun.text = data.tahun
 
-        binding.tvVehiclePkbPokok.text = PkbData.pkbData.pkbPokok
-        binding.tvVehiclePkbDenda.text = PkbData.pkbData.pkbDenda
-        binding.tvVehiclePkb.text = PkbData.pkbData.pkb
-        binding.tvVehicleSwdklljPokok.text = PkbData.pkbData.swdklljPokok
-        binding.tvVehicleSwdklljDenda.text = PkbData.pkbData.swdklljDenda
-        binding.tvVehicleSwdkllj.text = PkbData.pkbData.swdkllj
+            binding.tvVehiclePkbPokok.text = getString(R.string.currency_template, data.pkbPokok)
+            binding.tvVehiclePkbDenda.text = getString(R.string.currency_template, data.pkbDenda)
+            binding.tvVehiclePkb.text = getString(R.string.currency_template, data.pkb)
+            binding.tvVehicleSwdklljPokok.text = getString(R.string.currency_template, data.swdklljPokok)
+            binding.tvVehicleSwdklljDenda.text = getString(R.string.currency_template, data.swdklljDenda)
+            binding.tvVehicleSwdkllj.text = getString(R.string.currency_template, data.swdkllj)
 
-        binding.tvTotalPaymentValue.text = "Rp${PkbData.pkbData.total}"
-        binding.tvDueDateValue.text = "${PkbData.pkbData.tanggal}"
+            binding.tvTotalPaymentValue.text = getString(R.string.currency_template, data.total)
+            binding.tvDueDateValue.text = data.tanggal
+        } else {
+            binding.tvNotFoundResponse.visibility = View.VISIBLE
+
+            binding.cardVehicleTaxInfo.visibility = View.GONE
+            binding.tvTotalPaymentInfo.visibility = View.GONE
+            binding.tvTotalPaymentValue.visibility = View.GONE
+            binding.tvDueDateInfo.visibility = View.GONE
+            binding.tvDueDateValue.visibility = View.GONE
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

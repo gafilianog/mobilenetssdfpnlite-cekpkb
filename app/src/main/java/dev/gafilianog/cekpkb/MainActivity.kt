@@ -72,27 +72,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_take_picture -> {
                 takePictureIntent()
             }
+
             R.id.btn_search_pkb -> {
-//                startActivity(
-//                    Intent(this, PkbActivity::class.java)
-//                        .putExtra("LICENSE_NUMBER", detectedNumberLicense)
-//                        .putExtra("LICENSE_SUFFIX", detectedSuffixLicense)
-//                )
                 startActivity(
                     Intent(this, PkbActivity::class.java)
-                        .putExtra("LICENSE_NUMBER", "2487")
-                        .putExtra("LICENSE_SUFFIX", "AK")
+                        .putExtra("LICENSE_PREFIX", detectedPrefixLicense)
+                        .putExtra("LICENSE_NUMBER", detectedNumberLicense)
+                        .putExtra("LICENSE_SUFFIX", detectedSuffixLicense)
                 )
-                overridePendingTransition(0,0)
-                finish()
+                overridePendingTransition(0, 0)
             }
         }
     }
 
     private fun takePictureIntent() {
-//        detectedPrefixLicense = ""
-//        detectedNumberLicense = ""
-//        detectedSuffixLicense = ""
         try {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 takePictureIntent.resolveActivity(packageManager)?.also {
@@ -164,29 +157,45 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val detectedLicenseNumber = getDetectionLabel(results)
 
-        // TODO: Handle error detection and string modification
-        // TODO: Handle data fetch properly
-        if (detectedLicenseNumber.length >= 8) {
-            detectedPrefixLicense = detectedLicenseNumber.substring(0, 2)
-            detectedNumberLicense = detectedLicenseNumber.substring(2, 6)
-            detectedSuffixLicense = detectedLicenseNumber.substring(6, detectedLicenseNumber.length)
+        // Expect normal format of digit between alphabet total of 7
+        // Standard issue DIY Province 'AB' + 4 digit number + 1 char suffix
+        if (detectedLicenseNumber.length >= 7) {
+            detectedNumberLicense = detectedLicenseNumber.filter { it.isDigit() }
+            detectedPrefixLicense = detectedLicenseNumber.split(detectedNumberLicense)[0]
+            detectedSuffixLicense = detectedLicenseNumber.split(detectedNumberLicense)[1]
         }
 
-//        PkbData.getPkbData(detectedNumberLicense, detectedSuffixLicense, this)
-        PkbData.getPkbData("2487", "AK", this)
+        // Performance and UX wise,
+        // request and parsing will be done when user verify the license number
+        // to shorten the time
+        if (detectedPrefixLicense == "AB") {
+            PkbData.getPkbData(detectedNumberLicense, detectedSuffixLicense, this)
+        }
 
         runOnUiThread {
-            binding.tvLicenseNumber.text = detectedLicenseNumber
-//            binding.tvLicenseNumber.text = getString(
-//                R.string.detected_license_number,
-//                detectedPrefixLicense,
-//                detectedNumberLicense,
-//                detectedSuffixLicense)
-            binding.btnSearchPkb.visibility = View.VISIBLE
+            if (detectedLicenseNumber.isEmpty()) {
+                binding.btnSearchPkb.visibility = View.GONE
+                binding.tvLicenseNumber.text = getString(R.string.txt_undetected_nopol)
+            } else if (detectedPrefixLicense != "AB") {
+                binding.btnSearchPkb.visibility = View.GONE
+                binding.tvLicenseNumber.text = getString(R.string.txt_nopol_must_ab)
+            } else {
+                binding.tvConfirmation.visibility = View.VISIBLE
+                binding.tvLicenseNumber.text = getString(
+                    R.string.txt_detected_nopol,
+                    detectedPrefixLicense,
+                    detectedNumberLicense,
+                    detectedSuffixLicense
+                )
+                binding.btnSearchPkb.visibility = View.VISIBLE
+            }
         }
     }
 
     private fun getDetectionLabel(results: List<Detection>): String {
+        if (results.isEmpty())
+            return ""
+
         val licenseNumber = StringBuilder()
         val classMap: MutableMap<Float, String> = HashMap()
 
@@ -201,6 +210,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     companion object {
-        const val TAG = "TFLite - ODT"
+        const val TAG = "ERROR CekPKB"
     }
 }
