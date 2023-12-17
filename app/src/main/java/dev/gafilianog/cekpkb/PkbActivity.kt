@@ -8,7 +8,6 @@ import dev.gafilianog.cekpkb.databinding.ActivityPkbBinding
 class PkbActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPkbBinding
-    private lateinit var detectedPrefixLicense: String
     private lateinit var detectedNumberLicense: String
     private lateinit var detectedSuffixLicense: String
     private lateinit var data: Pkb
@@ -21,7 +20,6 @@ class PkbActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarResult)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        detectedPrefixLicense = intent.getStringExtra("LICENSE_PREFIX")!!
         detectedNumberLicense = intent.getStringExtra("LICENSE_NUMBER")!!
         detectedSuffixLicense = intent.getStringExtra("LICENSE_SUFFIX")!!
 
@@ -29,7 +27,7 @@ class PkbActivity : AppCompatActivity() {
         setUpDataInfo()
         binding.toolbarResult.subtitle = getString(
             R.string.txt_detected_nopol,
-            detectedPrefixLicense,
+            "AB",
             detectedNumberLicense,
             detectedSuffixLicense
         )

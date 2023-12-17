@@ -1,6 +1,5 @@
 package dev.gafilianog.cekpkb
 
-//import retrofit2.http.
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory

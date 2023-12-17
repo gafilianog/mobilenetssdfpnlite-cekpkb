@@ -2,10 +2,11 @@
     <string name="app_name">CekPKB</string>
     <string name="txt_take_picture">Foto Plat</string>
     <string name="txt_search_pkb">Cari PKB</string>
-    <string name="xpath_value">//table[contains(@class,\'table-bordered\')]//td[normalize-space()=\'%s\']/following-sibling::td</string>
     <string name="instructions_label">Petunjuk penggunaan aplikasi</string>
     <string name="txt_placeholder_nopol">[Nomor Polisi]</string>
     <string name="txt_confirmation">Jika nomor polisi berikut sudah sesuai, silakan tekan tombol \'Cari PKB\'</string>
+    <string name="txt_nopol_must_ab">Nomor polisi hanya boleh berawalan \'AB\'</string>
+
     <string name="txt_vehicle_tax_info">Informasi Pajak Kendaraan</string>
     <string name="txt_total_payment">Jumlah yang harus dibayarkan</string>
     <string name="txt_due_date">Sebelum tanggal</string>
@@ -21,6 +22,4 @@
     <string name="txt_detected_nopol">%s %s %s</string>
     <string name="currency_template">Rp%s</string>
     <string name="txt_not_found_response">Data kendaraan tidak ditemukan</string>
-    <string name="txt_undetected_nopol">Nomor polisi tidak terdeteksi</string>
-    <string name="txt_nopol_must_ab">Nomor polisi tidak terdeteksi</string>
 </resources>

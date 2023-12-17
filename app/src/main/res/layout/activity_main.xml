@@ -64,7 +64,6 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="@string/txt_confirmation"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/card_instructions" />
 
@@ -101,6 +100,7 @@
         android:layout_marginBottom="50dp"
         android:elevation="2dp"
         android:text="@string/txt_search_pkb"
+        android:visibility="gone"
         app:icon="@drawable/baseline_search_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

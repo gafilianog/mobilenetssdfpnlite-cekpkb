@@ -1,22 +1,27 @@
 package dev.gafilianog.cekpkb
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import dev.gafilianog.cekpkb.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.task.vision.detector.Detection
@@ -27,12 +32,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.TreeMap
 
+
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var detectedPrefixLicense: String
-    private lateinit var detectedNumberLicense: String
-    private lateinit var detectedSuffixLicense: String
+    private lateinit var detectedLicenseNumber: String
+    private var detectedPrefixLicense: String = "Nomor polisi"
+    private var detectedNumberLicense: String = "tidak"
+    private var detectedSuffixLicense: String = "terdeteksi"
     private lateinit var currentPhotoPath: String
     private val instructions = arrayOf(
         "Tekan tombol 'Foto Plat' di bawah yang akan membuka kamera ponsel",
@@ -51,6 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -67,6 +75,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnSearchPkb.setOnClickListener(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        detectedLicenseNumber = ""
+        binding.btnSearchPkb.visibility = View.GONE
+        binding.tvConfirmation.visibility = View.GONE
+        binding.tvLicenseNumber.text = getString(R.string.txt_placeholder_nopol)
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_take_picture -> {
@@ -74,13 +90,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_search_pkb -> {
-                startActivity(
-                    Intent(this, PkbActivity::class.java)
-                        .putExtra("LICENSE_PREFIX", detectedPrefixLicense)
-                        .putExtra("LICENSE_NUMBER", detectedNumberLicense)
-                        .putExtra("LICENSE_SUFFIX", detectedSuffixLicense)
-                )
-                overridePendingTransition(0, 0)
+                getDataAndOpenPkbActivity(detectedNumberLicense, detectedSuffixLicense)
             }
         }
     }
@@ -92,7 +102,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     val photoFile: File? = try {
                         createImageFile()
                     } catch (e: IOException) {
-                        Log.e(TAG, e.message.toString())
+                        Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
                         null
                     }
 
@@ -108,7 +118,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -155,40 +165,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val results = detector.detect(image)
 
-        val detectedLicenseNumber = getDetectionLabel(results)
+        detectedLicenseNumber = getDetectionLabel(results)
 
-        // Expect normal format of digit between alphabet total of 7
-        // Standard issue DIY Province 'AB' + 4 digit number + 1 char suffix
-        if (detectedLicenseNumber.length >= 7) {
+        if (detectedLicenseNumber.isNotEmpty()) {
             detectedNumberLicense = detectedLicenseNumber.filter { it.isDigit() }
             detectedPrefixLicense = detectedLicenseNumber.split(detectedNumberLicense)[0]
             detectedSuffixLicense = detectedLicenseNumber.split(detectedNumberLicense)[1]
         }
 
-        // Performance and UX wise,
-        // request and parsing will be done when user verify the license number
-        // to shorten the time
-        if (detectedPrefixLicense == "AB") {
-            PkbData.getPkbData(detectedNumberLicense, detectedSuffixLicense, this)
-        }
-
         runOnUiThread {
-            if (detectedLicenseNumber.isEmpty()) {
+            if (detectedPrefixLicense != "AB" && detectedLicenseNumber.isNotEmpty()) {
                 binding.btnSearchPkb.visibility = View.GONE
-                binding.tvLicenseNumber.text = getString(R.string.txt_undetected_nopol)
-            } else if (detectedPrefixLicense != "AB") {
-                binding.btnSearchPkb.visibility = View.GONE
-                binding.tvLicenseNumber.text = getString(R.string.txt_nopol_must_ab)
-            } else {
                 binding.tvConfirmation.visibility = View.VISIBLE
-                binding.tvLicenseNumber.text = getString(
-                    R.string.txt_detected_nopol,
-                    detectedPrefixLicense,
-                    detectedNumberLicense,
-                    detectedSuffixLicense
-                )
+                binding.tvConfirmation.text = getString(R.string.txt_nopol_must_ab)
+            } else if (detectedPrefixLicense == "AB" && detectedLicenseNumber.isNotEmpty()) {
+                binding.tvConfirmation.visibility = View.VISIBLE
                 binding.btnSearchPkb.visibility = View.VISIBLE
+                binding.tvConfirmation.text = getString(R.string.txt_confirmation)
             }
+
+            binding.tvLicenseNumber.text = getString(
+                R.string.txt_detected_nopol,
+                detectedPrefixLicense,
+                detectedNumberLicense,
+                detectedSuffixLicense
+            )
         }
     }
 
@@ -209,7 +210,41 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         return licenseNumber.toString()
     }
 
-    companion object {
-        const val TAG = "ERROR CekPKB"
+    private fun getDataAndOpenPkbActivity(
+        detectedNumberLicense: String,
+        detectedSuffixLicense: String
+    ) {
+        if (isConnectInternet(this)) {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = async {
+                        PkbData.getPkbData(detectedNumberLicense, detectedSuffixLicense)
+                    }.await()
+
+                    if (response.isSuccessful) {
+                        startActivity(
+                            Intent(this@MainActivity, PkbActivity::class.java)
+                                .putExtra("LICENSE_NUMBER", detectedNumberLicense)
+                                .putExtra("LICENSE_SUFFIX", detectedSuffixLicense)
+                        )
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(
+                this@MainActivity,
+                "Pastikan Anda terhubung dengan internet",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun isConnectInternet(ctx: Context): Boolean {
+        val connectivityManager =
+            ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return (networkInfo != null) && networkInfo.isAvailable && networkInfo.isConnected
     }
 }
