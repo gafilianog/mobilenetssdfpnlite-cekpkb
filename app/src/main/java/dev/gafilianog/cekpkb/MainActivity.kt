@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val detector = ObjectDetector.createFromFileAndOptions(
             this,
-            "platenum_quant_metadata.tflite",
+            "v6.tflite",
             options
         )
 
