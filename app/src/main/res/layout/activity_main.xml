@@ -6,21 +6,117 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/view_finder"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/app_name"
+            app:titleCentered="true" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_instructions"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/appbar_home">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_instructions_label"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/instructions_label" />
+
+            <ListView
+                android:id="@+id/lv_instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:divider="@null"
+                android:focusable="false"
+                android:listSelector="@android:color/transparent"
+                tools:listitem="@layout/item_row_instruction" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_confirmation"
+        style="@style/TextAppearance.Material3.BodyMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/card_instructions" />
+
+    <TextView
+        android:id="@+id/tv_license_number"
+        style="@style/TextAppearance.Material3.HeadlineMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:text="@string/txt_placeholder_nopol"
+        app:layout_constraintBottom_toTopOf="@id/tv_retake_photo"
+        app:layout_constraintTop_toBottomOf="@id/tv_confirmation" />
+
+    <TextView
+        android:id="@+id/tv_retake_photo"
+        style="@style/TextAppearance.Material3.BodyMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/txt_retake_photo"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/btn_take_picture" />
+
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_take_picture"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="50dp"
+        style="@style/Widget.Material3.Button.Icon"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:elevation="2dp"
-        android:text="@string/btn_take_picture"
+        android:text="@string/txt_take_picture"
+        app:icon="@drawable/baseline_photo_camera_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/btn_search_pkb"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_search_pkb"
+        style="@style/Widget.Material3.Button.Icon"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:elevation="2dp"
+        android:text="@string/txt_search_pkb"
+        android:visibility="gone"
+        app:icon="@drawable/baseline_search_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_take_picture" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
