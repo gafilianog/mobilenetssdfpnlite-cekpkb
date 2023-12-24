@@ -15,7 +15,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Cek PKB"
+            app:title="@string/app_name"
             app:titleCentered="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -75,8 +75,20 @@
         android:layout_marginHorizontal="16dp"
         android:gravity="center"
         android:text="@string/txt_placeholder_nopol"
-        app:layout_constraintBottom_toTopOf="@id/btn_take_picture"
+        app:layout_constraintBottom_toTopOf="@id/tv_retake_photo"
         app:layout_constraintTop_toBottomOf="@id/tv_confirmation" />
+
+    <TextView
+        android:id="@+id/tv_retake_photo"
+        style="@style/TextAppearance.Material3.BodyMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/txt_retake_photo"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/btn_take_picture" />
 
 
     <com.google.android.material.button.MaterialButton
@@ -84,7 +96,7 @@
         style="@style/Widget.Material3.Button.Icon"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="32dp"
         android:elevation="2dp"
         android:text="@string/txt_take_picture"
         app:icon="@drawable/baseline_photo_camera_24"
@@ -97,7 +109,7 @@
         style="@style/Widget.Material3.Button.Icon"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="32dp"
         android:elevation="2dp"
         android:text="@string/txt_search_pkb"
         android:visibility="gone"

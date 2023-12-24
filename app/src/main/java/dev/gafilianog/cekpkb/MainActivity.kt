@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var detectedLicenseNumber: String
-    private var detectedPrefixLicense: String = "Nomor polisi"
-    private var detectedNumberLicense: String = "tidak"
-    private var detectedSuffixLicense: String = "terdeteksi"
+    private var detectedPrefixLicense: String = ""
+    private var detectedNumberLicense: String = ""
+    private var detectedSuffixLicense: String = ""
     private lateinit var currentPhotoPath: String
     private val instructions = arrayOf(
         "Tekan tombol 'Foto Plat' di bawah yang akan membuka kamera ponsel",
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         "Arahkan kamera pada plat nomor dengan jarak yang dekat",
         "Tekan tombol ambil gambar dan klik 'OK' jika gambar dirasa sudah sesuai",
         "Pastikan hasil deteksi nomor polisi yang muncul sudah sesuai",
-        "Tekan tombol 'Cari PKB' yang muncul setelah deteksi nomor"
+        "Tekan tombol 'Cari PKB' yang muncul untuk melihat data pajak kendaraan"
     )
     private var resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         detectedLicenseNumber = ""
         binding.btnSearchPkb.visibility = View.GONE
         binding.tvConfirmation.visibility = View.GONE
+        binding.tvRetakePhoto.visibility = View.GONE
         binding.tvLicenseNumber.text = getString(R.string.txt_placeholder_nopol)
     }
 
@@ -167,20 +168,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         detectedLicenseNumber = getDetectionLabel(results)
 
-        if (detectedLicenseNumber.isNotEmpty()) {
+        if (detectedLicenseNumber.isEmpty()) {
+            detectedPrefixLicense = "Nomor polisi"
+            detectedNumberLicense = "tidak"
+            detectedSuffixLicense = "terdeteksi"
+        } else {
             detectedNumberLicense = detectedLicenseNumber.filter { it.isDigit() }
             detectedPrefixLicense = detectedLicenseNumber.split(detectedNumberLicense)[0]
             detectedSuffixLicense = detectedLicenseNumber.split(detectedNumberLicense)[1]
         }
 
         runOnUiThread {
-            if (detectedPrefixLicense != "AB" && detectedLicenseNumber.isNotEmpty()) {
+            if (detectedLicenseNumber.isEmpty()) {
+                binding.tvRetakePhoto.visibility = View.VISIBLE
+            } else if (detectedPrefixLicense != "AB") {
                 binding.btnSearchPkb.visibility = View.GONE
                 binding.tvConfirmation.visibility = View.VISIBLE
+                binding.tvRetakePhoto.visibility = View.VISIBLE
                 binding.tvConfirmation.text = getString(R.string.txt_nopol_must_ab)
-            } else if (detectedPrefixLicense == "AB" && detectedLicenseNumber.isNotEmpty()) {
+            } else {
                 binding.tvConfirmation.visibility = View.VISIBLE
                 binding.btnSearchPkb.visibility = View.VISIBLE
+                binding.tvRetakePhoto.visibility = View.GONE
                 binding.tvConfirmation.text = getString(R.string.txt_confirmation)
             }
 

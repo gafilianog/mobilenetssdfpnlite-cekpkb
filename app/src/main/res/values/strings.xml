@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CekPKB</string>
+    <string name="app_name">Cek PKB DIY</string>
     <string name="txt_take_picture">Foto Plat</string>
     <string name="txt_search_pkb">Cari PKB</string>
     <string name="instructions_label">Petunjuk penggunaan aplikasi</string>
@@ -22,4 +22,6 @@
     <string name="txt_detected_nopol">%s %s %s</string>
     <string name="currency_template">Rp%s</string>
     <string name="txt_not_found_response">Data kendaraan tidak ditemukan</string>
+    <string name="txt_retake_photo">Silakan foto ulang plat nomor dengan menekan tombol \'Foto Plat\' di bawah</string>
+    <string name="txt_back">Kembali</string>
 </resources>

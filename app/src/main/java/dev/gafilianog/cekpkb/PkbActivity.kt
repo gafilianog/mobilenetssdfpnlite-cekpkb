@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import dev.gafilianog.cekpkb.databinding.ActivityPkbBinding
 
-class PkbActivity : AppCompatActivity() {
+class PkbActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityPkbBinding
     private lateinit var detectedNumberLicense: String
@@ -31,6 +31,7 @@ class PkbActivity : AppCompatActivity() {
             detectedNumberLicense,
             detectedSuffixLicense
         )
+        binding.btnBackToHome.setOnClickListener(this)
     }
 
     private fun setUpDataInfo() {
@@ -62,5 +63,13 @@ class PkbActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_back_to_home -> {
+                this.finish()
+            }
+        }
     }
 }
