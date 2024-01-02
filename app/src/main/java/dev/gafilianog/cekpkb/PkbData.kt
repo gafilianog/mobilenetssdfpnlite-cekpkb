@@ -4,6 +4,7 @@ import org.jsoup.Jsoup
 import retrofit2.Response
 
 object PkbData {
+
     private const val XPATH_VALUE = "//table[contains(@class,'table-bordered')]//td[normalize-space()='%s']/following-sibling::td"
     var pkbData: Pkb = Pkb()
 

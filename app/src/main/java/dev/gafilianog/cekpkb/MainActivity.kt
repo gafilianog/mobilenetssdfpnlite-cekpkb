@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            setViewAndDetect(getCapturedImage())
+            lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(getCapturedImage()) }
         }
     }
 
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_take_picture -> {
-                takePictureIntent()
+                dispatchTakePictureIntent()
             }
 
             R.id.btn_search_pkb -> {
@@ -96,11 +95,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun takePictureIntent() {
+    private fun dispatchTakePictureIntent() {
         try {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 takePictureIntent.resolveActivity(packageManager)?.also {
-                    val photoFile: File? = try {
+                    val photoFile = try {
                         createImageFile()
                     } catch (e: IOException) {
                         Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -108,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                     photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(
+                        val photoURI = FileProvider.getUriForFile(
                             this,
                             "dev.gafilianog.cekpkb.fileprovider",
                             it
@@ -124,8 +123,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun createImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG_${timeStamp}_",
             ".jpg",
@@ -133,10 +132,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ).apply {
             currentPhotoPath = absolutePath
         }
-    }
-
-    private fun setViewAndDetect(bitmap: Bitmap) {
-        lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(bitmap) }
     }
 
     private fun getCapturedImage(): Bitmap {
